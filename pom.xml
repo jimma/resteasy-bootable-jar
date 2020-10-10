@@ -10,6 +10,8 @@
     <name>Resteasy Bootable JAR Example</name>
     <description>An bootable jaxrs jar</description>
     <properties>
+        <version.bootable.jar>2.0.0.Beta9</version.bootable.jar>
+        <version.wildfly>21.0.0.Beta1</version.wildfly>
         <version.jakartaee>8.0.0</version.jakartaee>
     </properties>
     <dependencies>
@@ -24,6 +26,28 @@
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-jar-maven-plugin</artifactId>
+                <version>${version.bootable.jar}</version>
+                <configuration>
+                    <feature-pack-location>wildfly@maven(org.jboss.universe:community-universe)#${version.wildfly}</feature-pack-location>
+                    <layers>
+                        <layer>jaxrs</layer>
+                        <layer>management</layer>
+                    </layers>
+                    <excluded-layers>
+                        <layer>deployment-scanner</layer>
+                    </excluded-layers>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-war-plugin</artifactId>
